@@ -59,12 +59,12 @@ export interface PlaylistType {
   };
   images: [Image];
   name: string;
-  owner?: {
+  owner: {
     id: string;
     display_name?: string;
   };
   items?: [{ added_at: string; track: Track }];
-  tracks?: {
+  tracks: {
     items?: [{ added_at: string; track: Track }];
     total: number;
   };
@@ -85,4 +85,32 @@ export interface SearchResults {
   tracks?: {
     items: Track[];
   };
+}
+
+export enum TimeRange {
+  ShortTerm = "short_term",
+  MediumTerm = "medium_term",
+  LongTerm = "long_term",
+}
+
+export interface PlaylistWithTracksType {
+  description?: string;
+  id: string;
+  followers?: {
+    total?: number;
+  };
+  images: [Image];
+  name: string;
+  owner: {
+    id: string;
+    display_name?: string;
+  };
+  items?: [{ added_at: string; track: Track }];
+  tracks: [
+    {
+      track: Track;
+      added_at: string;
+    }
+  ];
+  type?: string;
 }

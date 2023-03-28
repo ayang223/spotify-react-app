@@ -4,9 +4,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req });
-  const type = `tracks?time_range=short_term`;
-  // const playlists = await customGet("https://api.spotify.com/v1/me/playlists", session);
-  const topTracks = await getUsersTop(session);
+  const query = req.query;
+  const { type, time_range, limit } = query;
+  const qsp = `/${type}?time_range=${time_range}&limit=${limit}`;
+  const topTracks = await getUsersTop(session, qsp);
 
   res.status(200).json(topTracks);
 }
