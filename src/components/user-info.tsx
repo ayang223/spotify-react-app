@@ -9,29 +9,42 @@ const UserInfo = () => {
   const [discoverWeekly, setDiscoverWeekly] = useState<PlaylistWithTracksType>();
 
   const getMyPlaylists = async () => {
-    const res = await fetch("/api/playlists");
-    const { items } = await res.json();
-    console.log("items", items);
-    setPlaylists(items);
+    try {
+      const res = await fetch("/api/playlists");
+      const { items } = await res.json();
+      console.log("items", items);
+      setPlaylists(items);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const getMyTopTracks = async (type: string, timeRange: TimeRange, limit: number) => {
-    const url = `/api/top-tracks?type=${type}&time_range=${timeRange}&limit=${limit}`;
-    const res = await fetch(url);
-    const { items } = await res.json();
-    console.log("items", items);
-    setTracks(items);
+    try {
+      const url = `/api/top-tracks?type=${type}&time_range=${timeRange}&limit=${limit}`;
+      const res = await fetch(url);
+      const { items } = await res.json();
+      console.log("items", items);
+      setTracks(items);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const getDiscoverWeeklyPlaylist = async () => {
-    const res = await fetch("/api/weekly-playlist");
-    const playlist = await res.json();
-    setDiscoverWeekly(playlist);
+    try {
+      const res = await fetch("/api/weekly-playlist");
+      const playlist = await res.json();
+      setDiscoverWeekly(playlist);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const clear = () => {
     setPlaylists([]);
     setTracks([]);
+    setDiscoverWeekly(undefined);
   };
 
   return (
