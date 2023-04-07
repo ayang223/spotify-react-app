@@ -1,6 +1,6 @@
 import { DefaultSession } from "next-auth";
 
-interface User {
+export interface User {
   name?: string | null;
   email?: string | null;
   picture?: string | null;
@@ -85,12 +85,6 @@ export interface SearchResults {
   tracks?: {
     items: Track[];
   };
-}
-
-export enum TimeRange {
-  ShortTerm = "short_term",
-  MediumTerm = "medium_term",
-  LongTerm = "long_term",
 }
 
 export interface PlaylistWithTracksType {

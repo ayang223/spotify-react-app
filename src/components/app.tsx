@@ -1,23 +1,26 @@
 import Login from "./login";
 import { useSession, signOut, getSession, getCsrfToken } from "next-auth/react";
 import UserInfo from "./user-info";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { isAuthenticated } from "../../lib/is-authenticated";
 
 const App = () => {
   const { data: session } = useSession();
+  const router = useRouter();
+  console.log(session);
+  useEffect(() => {
+    if (!isAuthenticated(session)) {
+      router.push({
+        pathname: "/login",
+      });
+    }
+    return () => {};
+  }, []);
 
-  if (session) {
-    return (
-      <>
-        Signed in as {session.user?.email} <br />
-        <button onClick={() => signOut()}>Sign out</button>
-        <UserInfo />
-      </>
-    );
-  }
   return (
     <>
-      <h1>App</h1>
-      <Login />
+      <UserInfo />
     </>
   );
 };

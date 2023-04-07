@@ -1,5 +1,4 @@
-import NextAuth, { Session, User } from "next-auth";
-import { AdapterUser } from "next-auth/adapters";
+import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 import { environment } from "../../../../environment";
 
@@ -28,6 +27,11 @@ export default NextAuth({
     async session({ session, token }) {
       session.user = token;
       return session;
+    },
+    async redirect({ url }) {
+      if (url.includes("/login")) return "/";
+      if (!url.includes("/")) return "/login";
+      return url;
     },
   },
 });

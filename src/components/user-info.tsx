@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Artist, PlaylistType, PlaylistWithTracksType, TimeRange, Track } from "../types/types";
+import { TimeRange } from "../types/enums";
+import { Artist, PlaylistType, PlaylistWithTracksType, Track } from "../types/types";
 
 const UserInfo = () => {
   const [playlists, setPlaylists] = useState<PlaylistType[]>([]);
@@ -49,10 +50,30 @@ const UserInfo = () => {
 
   return (
     <>
-      <button onClick={() => getMyPlaylists()}>Get all my playlists</button>
-      <button onClick={() => getMyTopTracks("tracks", TimeRange.ShortTerm, 10)}>Get my top 10 plays</button>
-      <button onClick={() => getDiscoverWeeklyPlaylist()}>Get discover Weekly</button>
-      <button onClick={() => clear()}>clear</button>
+      <button
+        className="bg-blue-500 hover:bbg-blue-700 text-white text-sm py-1 px-2 mr-2 rounded-full"
+        onClick={() => getMyPlaylists()}
+      >
+        Get all my playlists
+      </button>
+      <button
+        className="bg-blue-500 hover:bbg-blue-700  text-white text-sm py-1 px-2 mr-2 rounded-full"
+        onClick={() => getMyTopTracks("tracks", TimeRange.ShortTerm, 10)}
+      >
+        Get my top 10 plays
+      </button>
+      <button
+        className="bg-blue-500 hover:bbg-blue-700  text-white text-sm py-1 px-2 mr-2 rounded-full"
+        onClick={() => getDiscoverWeeklyPlaylist()}
+      >
+        Get discover Weekly
+      </button>
+      <button
+        className="bg-blue-500 hover:bbg-blue-700  text-white text-sm py-1 px-2 mr-2 rounded-full"
+        onClick={() => clear()}
+      >
+        clear
+      </button>
       {playlists.map((playlist) => (
         <div key={playlist.id}>
           <h1>{playlist.name}</h1>
@@ -71,22 +92,24 @@ const UserInfo = () => {
         </div>
       ))}
 
-      <div>
-        <h1>{discoverWeekly?.name}</h1>
-        <p>week: {discoverWeekly?.tracks[0].added_at}</p>
-        <img src={discoverWeekly?.images[0]?.url} width="100" />
-        <p>{discoverWeekly?.owner.display_name}</p>
-        <p>{discoverWeekly?.tracks?.length} songs</p>
-        {discoverWeekly?.tracks.map((track) => (
-          <div key={track.track.id}>
-            <p>{track.track.name}</p>
-            <p>{track.track.album.name}</p>
-            {track.track.artists.map((artist) => (
-              <p key={artist.id}>{artist.name}</p>
-            ))}
-          </div>
-        ))}
-      </div>
+      {discoverWeekly && (
+        <div>
+          <h1>{discoverWeekly?.name}</h1>
+          <p>week: {discoverWeekly?.tracks[0].added_at}</p>
+          <img src={discoverWeekly?.images[0]?.url} width="100" />
+          <p>{discoverWeekly?.owner.display_name}</p>
+          <p>{discoverWeekly?.tracks?.length} songs</p>
+          {discoverWeekly?.tracks.map((track) => (
+            <div key={track.track.id}>
+              <p>track name: {track.track.name}</p>
+              <p>album: {track.track.album.name}</p>
+              {track.track.artists.map((artist) => (
+                <p key={artist.id}>from: {artist.name}</p>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 };
