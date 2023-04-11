@@ -1,12 +1,13 @@
 import { signOut, useSession } from "next-auth/react";
 import React from "react";
+import { isAuthenticated } from "../../lib/is-authenticated";
 
 const Header = () => {
   const { data: session } = useSession();
 
   return (
     <div className="flex w-screen h-[50px]">
-      {session && (
+      {session && isAuthenticated(session) && (
         <div className="flex justify-between w-screen items-center">
           <div className="flex items-center">
             <img
