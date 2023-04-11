@@ -1,4 +1,5 @@
 import { signOut, useSession } from "next-auth/react";
+import React from "react";
 
 const Header = () => {
   const { data: session } = useSession();

@@ -4,6 +4,7 @@ import UserInfo from "./user-info";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { isAuthenticated } from "../../lib/is-authenticated";
+import React from "react";
 
 const App = () => {
   const { data: session } = useSession();
