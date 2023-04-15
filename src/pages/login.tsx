@@ -1,34 +1,46 @@
-import { signIn, useSession } from "next-auth/react";
+import { getProviders, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { useEffect } from "react";
 import { isAuthenticated } from "../../lib/is-authenticated";
+import Loader from "../components/loader";
 
-const Login = () => {
+const Login = ({ providers }: { providers: any }) => {
   const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (isAuthenticated(session)) {
-      router.push({
-        pathname: "/",
-      });
+    if (session) {
+      router.push("/");
     }
-    return () => {};
-  }, []);
+  }, [session]);
+
+  if (session) return <Loader />;
+  console.log("providers", providers);
 
   return (
     <div className="flex flex-col justify-center content-center min-h-screen">
       <div className="flex justify-center content-center">
-        <h1 className="text-2xl">Not signed in</h1>
-      </div>
-      <div className="flex justify-center content-center">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded-full" onClick={() => signIn()}>
-          Sign in
-        </button>
+        {Object.values<any>(providers).map((provider) => (
+          <div key={provider.id}>
+            <button
+              className="text-white py-4 px-6 rounded-full bg-[#1db954] transition duration-300 ease-out border border-transparent uppercase font-bold text-xs md:text-base tracking-wider hover:scale-105 hover:bg-[#0db146]"
+              onClick={() => signIn(provider.id)}
+            >
+              Sign in with {provider.name}
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
 export default Login;
+
+export async function getServerSideProps() {
+  const providers = await getProviders();
+  return {
+    props: { providers },
+  };
+}

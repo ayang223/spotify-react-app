@@ -10,14 +10,14 @@ const App = () => {
   const { data: session } = useSession();
   const router = useRouter();
   console.log(session);
-  useEffect(() => {
-    if (!isAuthenticated(session)) {
-      router.push({
-        pathname: "/login",
-      });
-    }
-    return () => {};
-  }, []);
+  // useEffect(() => {
+  //   if (!isAuthenticated(session)) {
+  //     router.push({
+  //       pathname: "/login",
+  //     });
+  //   }
+  //   return () => {};
+  // }, []);
 
   return (
     <>
