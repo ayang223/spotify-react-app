@@ -58,7 +58,6 @@ export default NextAuth({
   },
   callbacks: {
     async jwt({ token, user, account }) {
-      console.log("token", account);
       // Initial sign in
       if (account && user) {
         return {
@@ -83,7 +82,6 @@ export default NextAuth({
     },
     async session({ session, token }) {
       session.user = token;
-      console.log("session", session);
       return session;
     },
   },
