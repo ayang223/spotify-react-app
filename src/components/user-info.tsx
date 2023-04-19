@@ -50,7 +50,7 @@ const UserInfo = () => {
   };
 
   return (
-    <>
+    <div>
       <button
         className="bg-blue-500 hover:bbg-blue-700 text-white text-sm py-1 px-2 mr-2 rounded-full"
         onClick={() => getMyPlaylists()}
@@ -111,7 +111,7 @@ const UserInfo = () => {
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

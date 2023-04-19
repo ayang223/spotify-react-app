@@ -16,7 +16,6 @@ const Login = ({ providers }: { providers: any }) => {
   }, [session]);
 
   if (session) return <Loader />;
-  console.log("providers", providers);
 
   return (
     <div className="flex flex-col justify-center content-center min-h-screen">
