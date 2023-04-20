@@ -4,6 +4,7 @@ import React from "react";
 import { useEffect } from "react";
 import { isAuthenticated } from "../../lib/is-authenticated";
 import Loader from "../components/loader";
+import Tabs from "../components/tabs";
 
 const TopTracks = ({ providers }: { providers: any }) => {
   const { data: session } = useSession();
@@ -11,7 +12,9 @@ const TopTracks = ({ providers }: { providers: any }) => {
 
   return (
     <div className="flex flex-col justify-center content-center">
-      <div className="flex justify-center content-center">top tracks</div>
+      <div className="flex justify-center content-center">
+        <Tabs />
+      </div>
     </div>
   );
 };
