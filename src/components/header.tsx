@@ -21,7 +21,7 @@ const Header = () => {
   const { data: session } = useSession();
 
   return (
-    <div>
+    <nav className="sticky top-0 z-30 bg-white">
       {session && isAuthenticated(session) && (
         <Disclosure as="nav" className="border-b-2">
           {({ open }) => (
@@ -110,7 +110,7 @@ const Header = () => {
           )}
         </Disclosure>
       )}
-    </div>
+    </nav>
   );
 };
 

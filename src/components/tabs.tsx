@@ -34,7 +34,7 @@ const Tabs = () => {
   }, []);
 
   return (
-    <div className="w-full w-6/12 w-screen px-2 px-4 py-4 sm:w-9/12 md:w-6/12 sm:px-0">
+    <div className="w-6/12 w-screen px-2 px-4 py-4 sm:w-9/12 md:w-6/12 sm:px-0">
       <Tab.Group defaultIndex={0} onChange={(i) => onTabGroupChange(i)}>
         <Tab.List className="flex space-x-1 rounded-xl p-1 bg-gray-100 ">
           {/* {Object.keys(categories).map((category) => ( */}
@@ -56,13 +56,15 @@ const Tabs = () => {
         <Tab.Panels className="mt-2">
           <Tab.Panel>
             {shortTermTopTracks.map((item, index) => (
-              <div key={item.id}>
-                <h1>{item.name}</h1>
-                {item.artists.map((artist) => (
-                  <p key={artist.id}>{artist.name}</p>
+              <div key={item.id} className="flex overflow-auto">
+                <img src={item.album.images[0]?.url} width="50" />
+                <p>{item.name}</p>
+                {item.artists.map((artist, index) => (
+                  <span key={artist.id}>
+                    {artist.name}
+                    {index < item.artists.length - 1 ? ", " : ""}
+                  </span>
                 ))}
-
-                <img src={item.album.images[0]?.url} width="100" />
               </div>
             ))}
           </Tab.Panel>
