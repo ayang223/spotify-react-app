@@ -1,12 +1,11 @@
-import { getProviders, signIn, useSession } from "next-auth/react";
+import { getProviders, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { isAuthenticated } from "../../lib/is-authenticated";
 import Loader from "../components/loader";
-import Tabs from "../components/tabs";
 import { Track } from "../types/types";
 import { Tab } from "@headlessui/react";
+import TrackLayout from "../components/tracks-layout";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -17,12 +16,10 @@ const TopTracks = ({ providers }: { providers: any }) => {
   const [shortTermTopTracks, setShortTermTopTracks] = useState<Track[]>([]);
   const [mediumTermTopTracks, setMediumTermTopTracks] = useState<Track[]>([]);
   const [longTermTopTracks, setLongTermTopTracks] = useState<Track[]>([]);
-  const [activeTab, setActiveTab] = useState<number>(0);
   const { data: session } = useSession();
   const router = useRouter();
 
   const onTabGroupChange = (index: number) => {
-    // setActiveTab(index);
     if (index == 1) {
       const fetchMediumTerm = async () => {
         try {
@@ -34,7 +31,7 @@ const TopTracks = ({ providers }: { providers: any }) => {
           console.log(err);
         }
       };
-      fetchMediumTerm();
+      if (mediumTermTopTracks.length === 0) fetchMediumTerm();
     } else if (index == 2) {
       const fetchLongTerm = async () => {
         try {
@@ -46,7 +43,7 @@ const TopTracks = ({ providers }: { providers: any }) => {
           console.log(err);
         }
       };
-      fetchLongTerm();
+      if (longTermTopTracks.length === 0) fetchLongTerm();
     }
   };
 
@@ -67,8 +64,7 @@ const TopTracks = ({ providers }: { providers: any }) => {
   return (
     <div className="flex flex-col justify-center content-center">
       <div className="flex justify-center content-center">
-        {/*  */}
-        <div className="w-6/12 w-screen px-2 px-4 py-4 sm:w-9/12 md:w-6/12 sm:px-0">
+        <div className="w-screen px-2 px-4 py-4 sm:w-9/12  sm:px-0">
           <Tab.Group defaultIndex={0} onChange={(i) => onTabGroupChange(i)}>
             <Tab.List className="flex space-x-1 rounded-xl p-1 bg-gray-100 ">
               {categories.map((category, index) => (
@@ -88,64 +84,13 @@ const TopTracks = ({ providers }: { providers: any }) => {
             </Tab.List>
             <Tab.Panels className="mt-2">
               <Tab.Panel>
-                {shortTermTopTracks.length == 0 ? (
-                  <Loader />
-                ) : (
-                  <>
-                    {shortTermTopTracks.map((item, index) => (
-                      <div key={item.id} className="flex overflow-auto">
-                        <img src={item.album.images[0]?.url} width="50" />
-                        <p>{item.name}</p>
-                        {item.artists.map((artist, index) => (
-                          <span key={artist.id}>
-                            {artist.name}
-                            {index < item.artists.length - 1 ? ", " : ""}
-                          </span>
-                        ))}
-                      </div>
-                    ))}
-                  </>
-                )}
+                {shortTermTopTracks.length == 0 ? <Loader /> : <TrackLayout tracks={shortTermTopTracks} />}
               </Tab.Panel>
               <Tab.Panel>
-                {mediumTermTopTracks.length == 0 ? (
-                  <Loader />
-                ) : (
-                  <>
-                    {mediumTermTopTracks.map((item, index) => (
-                      <div key={item.id} className="flex overflow-auto">
-                        <img src={item.album.images[0]?.url} width="50" />
-                        <p>{item.name}</p>
-                        {item.artists.map((artist, index) => (
-                          <span key={artist.id}>
-                            {artist.name}
-                            {index < item.artists.length - 1 ? ", " : ""}
-                          </span>
-                        ))}
-                      </div>
-                    ))}
-                  </>
-                )}
+                {mediumTermTopTracks.length == 0 ? <Loader /> : <TrackLayout tracks={mediumTermTopTracks} />}
               </Tab.Panel>
               <Tab.Panel>
-                {longTermTopTracks.length == 0 ? (
-                  <Loader />
-                ) : (
-                  <>
-                    {longTermTopTracks.map((item, index) => (
-                      <div key={item.id} className="flex overflow-auto">
-                        <img src={item.album.images[0]?.url} width="50" />
-                        <p>{item.name}</p>
-                        {item.artists.map((artist, index) => (
-                          <span key={artist.id}>
-                            {artist.name}
-                            {index < item.artists.length - 1 ? ", " : ""}
-                          </span>
-                        ))}
-                      </div>
-                    ))}
-                  </>
-                )}
+                {longTermTopTracks.length == 0 ? <Loader /> : <TrackLayout tracks={longTermTopTracks} />}
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>
