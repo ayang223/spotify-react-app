@@ -2,6 +2,7 @@ import { DefaultSession } from "next-auth";
 
 export interface User {
   name?: string | null;
+  username: string;
   email?: string | null;
   picture?: string | null;
   image?: string | null;
