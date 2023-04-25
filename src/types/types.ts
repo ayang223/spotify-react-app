@@ -7,6 +7,7 @@ export interface User {
   picture?: string | null;
   image?: string | null;
   accessToken?: string | null;
+  id?: string | null;
 }
 
 export interface Session extends Omit<DefaultSession, "user"> {
@@ -110,4 +111,5 @@ export interface PlaylistWithTracksType {
     }
   ];
   type?: string;
+  external_urls: { spotify: string };
 }

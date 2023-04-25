@@ -20,7 +20,6 @@ const navigation = [
 const Header = () => {
   const { data: session } = useSession();
 
-  console.log(session);
   const getDisplayName = () => {
     return session?.user.name ? session?.user.name : session?.user.username;
   };
