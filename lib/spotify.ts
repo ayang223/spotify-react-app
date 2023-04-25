@@ -54,3 +54,21 @@ export const getUsersTop = async (session: Session | null, qsp: string) => {
     },
   }).then((res) => res.json());
 };
+
+export const createPlaylist = async (session: Session | null, body: any) => {
+  const url = environment.USER_ENDPOINT + `/${session?.user?.id}/playlists`;
+  try {
+    const res = fetch(url, {
+      headers: {
+        Authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+    return res.then((res) => res.json());
+  } catch (err) {
+    return err;
+  }
+};
+
+export const addToPlaylist = async (session: Session | null) => {};

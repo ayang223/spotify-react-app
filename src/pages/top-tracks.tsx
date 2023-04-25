@@ -84,13 +84,25 @@ const TopTracks = ({ providers }: { providers: any }) => {
             </Tab.List>
             <Tab.Panels className="mt-2">
               <Tab.Panel>
-                {shortTermTopTracks.length == 0 ? <Loader /> : <TrackLayout tracks={shortTermTopTracks} />}
+                {shortTermTopTracks.length == 0 ? (
+                  <Loader />
+                ) : (
+                  <TrackLayout tracks={shortTermTopTracks} type="shortTerm" />
+                )}
               </Tab.Panel>
               <Tab.Panel>
-                {mediumTermTopTracks.length == 0 ? <Loader /> : <TrackLayout tracks={mediumTermTopTracks} />}
+                {mediumTermTopTracks.length == 0 ? (
+                  <Loader />
+                ) : (
+                  <TrackLayout tracks={mediumTermTopTracks} type="mediumTerm" />
+                )}
               </Tab.Panel>
               <Tab.Panel>
-                {longTermTopTracks.length == 0 ? <Loader /> : <TrackLayout tracks={longTermTopTracks} />}
+                {longTermTopTracks.length == 0 ? (
+                  <Loader />
+                ) : (
+                  <TrackLayout tracks={longTermTopTracks} type="longTerm" />
+                )}
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>

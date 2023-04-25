@@ -1,11 +1,46 @@
 import React from "react";
+// import { createPlaylist } from "../../lib/spotify";
 import { Track } from "../types/types";
 
 interface TrackLayoutProps {
   tracks: Track[];
+  type: string;
 }
 
-const TrackLayout = ({ tracks }: TrackLayoutProps) => {
+const createPlaylist = async (type: string) => {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;
+  const date = currentDate.getDate();
+  const data = {
+    name: "",
+    description: "",
+    public: false,
+  };
+  if (type == "mediumTerm") {
+    data.name = `Top Tracks ${year}-${month}-${date} (last 6 months)`;
+    data.description = `Your favorite tracks last 6 months as of ${year}-${month}-${date}`;
+  } else if (type == "longTerm") {
+    data.name = `Top Tracks ${year}-${month}-${date} (all time)`;
+    data.description = `Your favorite tracks all time as of ${year}-${month}-${date}`;
+  } else {
+    data.name = `Top Tracks ${year}-${month}-${date} (last 4 weeks)`;
+    data.description = `Your favorite tracks last 4 weeks as of ${year}-${month}-${date}`;
+  }
+
+  try {
+    const res = await fetch("/api/create-playlist", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    console.log(await res.json());
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const TrackLayout = ({ tracks, type }: TrackLayoutProps) => {
   return (
     <>
       {tracks.map((item, index) => (
@@ -38,6 +73,12 @@ const TrackLayout = ({ tracks }: TrackLayoutProps) => {
           </div>
         </div>
       ))}
+      <button
+        className="bg-green-500 hover:bg-green-700  text-white text-sm py-3 px-5 rounded-lg"
+        onClick={() => createPlaylist(type)}
+      >
+        Save to Playlist
+      </button>
     </>
   );
 };
