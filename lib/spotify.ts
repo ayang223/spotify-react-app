@@ -71,4 +71,18 @@ export const createPlaylist = async (session: Session | null, body: any) => {
   }
 };
 
-export const addToPlaylist = async (session: Session | null) => {};
+export const addToPlaylist = async (session: Session | null, playlistId: string, songList: {}) => {
+  const url = environment.PLAYLISTS_ENDPOINT + `/${playlistId}/tracks`;
+  try {
+    const res = fetch(url, {
+      headers: {
+        Authorization: `Bearer ${session?.user?.accessToken}`,
+      },
+      method: "POST",
+      body: JSON.stringify(songList),
+    });
+    return res.then((res) => res.json());
+  } catch (err) {
+    return err;
+  }
+};

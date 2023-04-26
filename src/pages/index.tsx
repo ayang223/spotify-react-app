@@ -1,11 +1,8 @@
-import Head from "next/head";
 import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Loader from "../components/loader";
-import UserInfo from "../components/user-info";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,13 +15,14 @@ const Home = () => {
     },
   });
 
-  if (status === "loading") return <Loader />;
+  useEffect(() => {
+    router.push("/top-tracks");
+  }, []);
 
   console.log("session", session);
   return (
-    <div className="flex flex-col justify-center content-center">
-      home
-      <UserInfo />
+    <div className="flex flex-col justify-center items-center content-center">
+      <Loader />
     </div>
   );
 };

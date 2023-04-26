@@ -1,46 +1,60 @@
-import React from "react";
-// import { createPlaylist } from "../../lib/spotify";
-import { Track } from "../types/types";
+import React, { useState } from "react";
+import { PlaylistType, Track } from "../types/types";
 
 interface TrackLayoutProps {
   tracks: Track[];
   type: string;
 }
 
-const createPlaylist = async (type: string) => {
-  const currentDate = new Date();
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth() + 1;
-  const date = currentDate.getDate();
-  const data = {
-    name: "",
-    description: "",
-    public: false,
-  };
-  if (type == "mediumTerm") {
-    data.name = `Top Tracks ${year}-${month}-${date} (last 6 months)`;
-    data.description = `Your favorite tracks last 6 months as of ${year}-${month}-${date}`;
-  } else if (type == "longTerm") {
-    data.name = `Top Tracks ${year}-${month}-${date} (all time)`;
-    data.description = `Your favorite tracks all time as of ${year}-${month}-${date}`;
-  } else {
-    data.name = `Top Tracks ${year}-${month}-${date} (last 4 weeks)`;
-    data.description = `Your favorite tracks last 4 weeks as of ${year}-${month}-${date}`;
-  }
-
-  try {
-    const res = await fetch("/api/create-playlist", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-
-    console.log(await res.json());
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 const TrackLayout = ({ tracks, type }: TrackLayoutProps) => {
+  const [playlist, setPlaylist] = useState<PlaylistType>();
+
+  const createPlaylist = async (type: string) => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1;
+    const date = currentDate.getDate();
+    const data = {
+      name: "",
+      description: "",
+      public: false,
+      uris: createPlaylistSongList(),
+    };
+    if (type == "mediumTerm") {
+      data.name = `Top Tracks ${year}-${month}-${date} (last 6 months)`;
+      data.description = `Your favorite tracks last 6 months as of ${year}-${month}-${date}`;
+    } else if (type == "longTerm") {
+      data.name = `Top Tracks ${year}-${month}-${date} (all time)`;
+      data.description = `Your favorite tracks all time as of ${year}-${month}-${date}`;
+    } else {
+      data.name = `Top Tracks ${year}-${month}-${date} (last 4 weeks)`;
+      data.description = `Your favorite tracks last 4 weeks as of ${year}-${month}-${date}`;
+    }
+
+    try {
+      const res = await fetch("/api/create-playlist", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      setPlaylist(await res.json());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const createPlaylistSongList = () => {
+    let songArr = [];
+    for (const track of tracks) {
+      songArr.push(track.uri);
+    }
+
+    return songArr;
+  };
+
+  const openOnSpotify = (url: string) => {
+    window.open(url, "_blank");
+  };
+
   return (
     <>
       {tracks.map((item, index) => (
@@ -73,12 +87,22 @@ const TrackLayout = ({ tracks, type }: TrackLayoutProps) => {
           </div>
         </div>
       ))}
-      <button
-        className="bg-green-500 hover:bg-green-700  text-white text-sm py-3 px-5 rounded-lg"
-        onClick={() => createPlaylist(type)}
-      >
-        Save to Playlist
-      </button>
+      {playlist && (
+        <button
+          className="bg-blue-500 hover:bg-blue-700  text-white text-sm py-3 px-5 rounded-lg"
+          onClick={() => openOnSpotify(playlist.external_urls.spotify)}
+        >
+          Open on Spotify
+        </button>
+      )}
+      {!playlist && (
+        <button
+          className="bg-green-500 hover:bg-green-700  text-white text-sm py-3 px-5 rounded-lg"
+          onClick={() => createPlaylist(type)}
+        >
+          Save to Playlist
+        </button>
+      )}
     </>
   );
 };

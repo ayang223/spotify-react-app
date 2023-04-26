@@ -2,7 +2,6 @@ import { getProviders, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { useEffect } from "react";
-import { isAuthenticated } from "../../lib/is-authenticated";
 import Loader from "../components/loader";
 
 const Login = ({ providers }: { providers: any }) => {
@@ -11,7 +10,7 @@ const Login = ({ providers }: { providers: any }) => {
 
   useEffect(() => {
     if (session) {
-      router.push("/");
+      router.push("/top-artists");
     }
   }, [session]);
 

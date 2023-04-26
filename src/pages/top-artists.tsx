@@ -1,8 +1,7 @@
-import { getProviders, signIn, useSession } from "next-auth/react";
+import { getProviders, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { isAuthenticated } from "../../lib/is-authenticated";
 import { Tab } from "@headlessui/react";
 import Loader from "../components/loader";
 import { Artist } from "../types/types";

@@ -53,6 +53,7 @@ export interface Track {
   duration_ms: number;
   preview_url: string;
   external_urls: { spotify: string };
+  uri: string;
 }
 
 export interface PlaylistType {
@@ -74,6 +75,7 @@ export interface PlaylistType {
   };
   type?: string;
   total?: number;
+  external_urls: { spotify: string };
 }
 
 export interface SearchResults {

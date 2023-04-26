@@ -1,9 +1,9 @@
 import { signOut, useSession } from "next-auth/react";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { isAuthenticated } from "../../lib/is-authenticated";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 function classNames(...classes: any) {
@@ -11,14 +11,14 @@ function classNames(...classes: any) {
 }
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Top Tracks", href: "/top-tracks", current: false },
-  { name: "Top Artist", href: "/top-artists", current: false },
-  { name: "Weekly Playlist", href: "/weekly-playlist", current: false },
+  { name: "Top Tracks", href: "/top-tracks" },
+  { name: "Top Artist", href: "/top-artists" },
+  { name: "Weekly Playlist", href: "/weekly-playlist" },
 ];
 
 const Header = () => {
   const { data: session } = useSession();
+  const [activeTab, setActiveTab] = useState(0);
 
   const getDisplayName = () => {
     return session?.user.name ? session?.user.name : session?.user.username;
@@ -46,8 +46,13 @@ const Header = () => {
                   <div className="flex flex-1 items-center justify-center sm:items-stretch">
                     <div className="hidden sm:ml-6 sm:block">
                       <div className="flex space-x-4">
-                        {navigation.map((item) => (
-                          <Link key={item.name} href={item.href} aria-current={item.current ? "page" : undefined}>
+                        {navigation.map((item, index) => (
+                          <Link
+                            key={item.name}
+                            href={item.href}
+                            onClick={() => setActiveTab(index)}
+                            className={index == activeTab ? "underline" : ""}
+                          >
                             {item.name}
                           </Link>
                         ))}
@@ -97,13 +102,17 @@ const Header = () => {
 
               <Disclosure.Panel className="sm:hidden">
                 <div className="space-y-1 px-2 pb-3 pt-2">
-                  {navigation.map((item) => (
+                  {navigation.map((item, index) => (
                     <Link
                       key={item.name}
                       as="a"
                       href={item.href}
-                      className={classNames("block rounded-md px-3 py-2 text-base font-medium")}
-                      aria-current={item.current ? "page" : undefined}
+                      onClick={() => setActiveTab(index)}
+                      className={
+                        index == activeTab
+                          ? "block rounded-md px-3 py-2 text-base font-medium underline"
+                          : "block rounded-md px-3 py-2 text-base font-medium"
+                      }
                     >
                       {item.name}
                     </Link>
