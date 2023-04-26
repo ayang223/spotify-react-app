@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import { PlaylistType, PlaylistWithTracksType } from "../types/types";
+import React from "react";
+import { PlaylistWithTracksType } from "../types/types";
+import { useDispatch, useSelector } from "react-redux";
+import { selectNewlyCreatedPlaylist, setNewlyCreatedPlaylist } from "../store/weekly-playlist-slice";
 
 interface PlaylistLayoutProps {
   playlist: PlaylistWithTracksType[];
 }
 
 const PlaylistLayout = ({ playlist }: PlaylistLayoutProps) => {
-  const [createdPlaylist, setCreatedPlaylist] = useState<PlaylistType>();
+  const dispatch = useDispatch();
+  const newlyCreatedPlaylist = useSelector(selectNewlyCreatedPlaylist);
 
   const createPlaylist = async () => {
     const currentDate = new Date();
@@ -29,7 +32,7 @@ const PlaylistLayout = ({ playlist }: PlaylistLayoutProps) => {
         method: "POST",
         body: JSON.stringify(data),
       });
-      setCreatedPlaylist(await res.json());
+      dispatch(setNewlyCreatedPlaylist(await res.json()));
     } catch (err) {
       console.log(err);
     }
@@ -48,10 +51,10 @@ const PlaylistLayout = ({ playlist }: PlaylistLayoutProps) => {
   };
 
   const displayButton = () => {
-    return createdPlaylist ? (
+    return newlyCreatedPlaylist ? (
       <button
         className="bg-blue-500 hover:bg-blue-700  text-white text-sm py-3 px-5 rounded-lg"
-        onClick={() => openOnSpotify(createdPlaylist?.external_urls.spotify)}
+        onClick={() => openOnSpotify(newlyCreatedPlaylist?.external_urls.spotify)}
       >
         Open on Spotify
       </button>
@@ -123,7 +126,6 @@ const PlaylistLayout = ({ playlist }: PlaylistLayoutProps) => {
           </div>
         </div>
       ))}
-      {/* </div> */}
     </>
   );
 };

@@ -1,5 +1,14 @@
-import React, { useState } from "react";
-import { PlaylistType, Track } from "../types/types";
+import React from "react";
+import { Track } from "../types/types";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectNewLongTermPlaylist,
+  selectNewMediumTermPlaylist,
+  selectNewShortTermPlaylist,
+  setNewLongTermPlaylist,
+  setNewMediumTermPlaylist,
+  setNewShortTermPlaylist,
+} from "../store/top-tracks-slice";
 
 interface TrackLayoutProps {
   tracks: Track[];
@@ -7,7 +16,10 @@ interface TrackLayoutProps {
 }
 
 const TrackLayout = ({ tracks, type }: TrackLayoutProps) => {
-  const [playlist, setPlaylist] = useState<PlaylistType>();
+  const dispatch = useDispatch();
+  const shortTermPlaylist = useSelector(selectNewShortTermPlaylist);
+  const mediumTermPlaylist = useSelector(selectNewMediumTermPlaylist);
+  const longTermPlaylist = useSelector(selectNewLongTermPlaylist);
 
   const createPlaylist = async (type: string) => {
     const currentDate = new Date();
@@ -36,7 +48,9 @@ const TrackLayout = ({ tracks, type }: TrackLayoutProps) => {
         method: "POST",
         body: JSON.stringify(data),
       });
-      setPlaylist(await res.json());
+      if (type == "mediumTerm") dispatch(setNewMediumTermPlaylist(await res.json()));
+      else if (type == "longTerm") dispatch(setNewLongTermPlaylist(await res.json()));
+      else dispatch(setNewShortTermPlaylist(await res.json()));
     } catch (err) {
       console.log(err);
     }
@@ -53,6 +67,58 @@ const TrackLayout = ({ tracks, type }: TrackLayoutProps) => {
 
   const openOnSpotify = (url: string) => {
     window.open(url, "_blank");
+  };
+
+  const displayButton = (type: string) => {
+    if (type == "mediumTerm") {
+      return mediumTermPlaylist ? (
+        <button
+          className="bg-blue-500 hover:bg-blue-700  text-white text-sm py-3 px-5 rounded-lg"
+          onClick={() => openOnSpotify(mediumTermPlaylist.external_urls.spotify)}
+        >
+          Open on Spotify
+        </button>
+      ) : (
+        <button
+          className="bg-green-500 hover:bg-green-700  text-white text-sm py-3 px-5 rounded-lg"
+          onClick={() => createPlaylist(type)}
+        >
+          Save to Playlist
+        </button>
+      );
+    } else if (type == "longTerm") {
+      return longTermPlaylist ? (
+        <button
+          className="bg-blue-500 hover:bg-blue-700  text-white text-sm py-3 px-5 rounded-lg"
+          onClick={() => openOnSpotify(longTermPlaylist.external_urls.spotify)}
+        >
+          Open on Spotify
+        </button>
+      ) : (
+        <button
+          className="bg-green-500 hover:bg-green-700  text-white text-sm py-3 px-5 rounded-lg"
+          onClick={() => createPlaylist(type)}
+        >
+          Save to Playlist
+        </button>
+      );
+    } else {
+      return shortTermPlaylist ? (
+        <button
+          className="bg-blue-500 hover:bg-blue-700  text-white text-sm py-3 px-5 rounded-lg"
+          onClick={() => openOnSpotify(shortTermPlaylist.external_urls.spotify)}
+        >
+          Open on Spotify
+        </button>
+      ) : (
+        <button
+          className="bg-green-500 hover:bg-green-700  text-white text-sm py-3 px-5 rounded-lg"
+          onClick={() => createPlaylist(type)}
+        >
+          Save to Playlist
+        </button>
+      );
+    }
   };
 
   return (
@@ -87,22 +153,7 @@ const TrackLayout = ({ tracks, type }: TrackLayoutProps) => {
           </div>
         </div>
       ))}
-      {playlist && (
-        <button
-          className="bg-blue-500 hover:bg-blue-700  text-white text-sm py-3 px-5 rounded-lg"
-          onClick={() => openOnSpotify(playlist.external_urls.spotify)}
-        >
-          Open on Spotify
-        </button>
-      )}
-      {!playlist && (
-        <button
-          className="bg-green-500 hover:bg-green-700  text-white text-sm py-3 px-5 rounded-lg"
-          onClick={() => createPlaylist(type)}
-        >
-          Save to Playlist
-        </button>
-      )}
+      {displayButton(type)}
     </>
   );
 };
