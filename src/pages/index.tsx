@@ -19,7 +19,6 @@ const Home = () => {
     router.push("/top-tracks");
   }, []);
 
-  console.log("session", session);
   return (
     <div className="flex flex-col justify-center items-center content-center">
       <Loader />
