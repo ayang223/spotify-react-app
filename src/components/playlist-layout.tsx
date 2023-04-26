@@ -43,7 +43,7 @@ const PlaylistLayout = ({ playlist }: PlaylistLayoutProps) => {
     return songArr;
   };
 
-  const openOnSpotify = (url: string) => {
+  const openOnSpotify = (url: string): void => {
     window.open(url, "_blank");
   };
 

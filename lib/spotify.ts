@@ -86,3 +86,11 @@ export const addToPlaylist = async (session: Session | null, playlistId: string,
     return err;
   }
 };
+
+export const getRecentlyPlayed = async (session: Session | null) => {
+  return fetch(environment.RECENTLY_PLAYED_ENDPOINT + `?limit=50`, {
+    headers: {
+      Authorization: `Bearer ${session?.user?.accessToken}`,
+    },
+  }).then((res) => res.json());
+};

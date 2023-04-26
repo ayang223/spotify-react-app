@@ -5,6 +5,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -14,11 +15,18 @@ const navigation = [
   { name: "Top Tracks", href: "/top-tracks" },
   { name: "Top Artist", href: "/top-artists" },
   { name: "Weekly Playlist", href: "/weekly-playlist" },
+  { name: "Recently Played", href: "/recently-played" },
 ];
 
 const Header = () => {
   const { data: session } = useSession();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState(0);
+
+  useEffect(() => {
+    const index = navigation.findIndex((x) => x.href === router.asPath);
+    setActiveTab(index);
+  }, []);
 
   const getDisplayName = () => {
     return session?.user.name ? session?.user.name : session?.user.username;

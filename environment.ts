@@ -6,6 +6,7 @@ const USER_PLAYLIST_ENDPOINT = "https://api.spotify.com/v1/me/playlists";
 const USER_TOP_ENDPOINT = "https://api.spotify.com/v1/me/top";
 const SEARCH_ENDPOINT = "https://api.spotify.com/v1/search";
 const USER_ENDPOINT = "https://api.spotify.com/v1/users";
+const RECENTLY_PLAYED_ENDPOINT = "https://api.spotify.com/v1/me/player/recently-played";
 
 export const environment = {
   SPOTIFY_CLIENT_ID,
@@ -16,4 +17,5 @@ export const environment = {
   USER_PLAYLIST_ENDPOINT,
   USER_TOP_ENDPOINT,
   SEARCH_ENDPOINT,
+  RECENTLY_PLAYED_ENDPOINT,
 };
