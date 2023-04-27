@@ -85,4 +85,5 @@ export default NextAuth({
       return session;
     },
   },
+  secret: environment.NEXT_AUTH_SECRET,
 });

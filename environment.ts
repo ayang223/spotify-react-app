@@ -7,6 +7,7 @@ const USER_TOP_ENDPOINT = "https://api.spotify.com/v1/me/top";
 const SEARCH_ENDPOINT = "https://api.spotify.com/v1/search";
 const USER_ENDPOINT = "https://api.spotify.com/v1/users";
 const RECENTLY_PLAYED_ENDPOINT = "https://api.spotify.com/v1/me/player/recently-played";
+const NEXT_AUTH_SECRET = process.env.NEXT_AUTH_SECRET || "no next auth secret";
 
 export const environment = {
   SPOTIFY_CLIENT_ID,
@@ -18,4 +19,5 @@ export const environment = {
   USER_TOP_ENDPOINT,
   SEARCH_ENDPOINT,
   RECENTLY_PLAYED_ENDPOINT,
+  NEXT_AUTH_SECRET,
 };
