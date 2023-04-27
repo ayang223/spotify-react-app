@@ -2,11 +2,12 @@ import { DefaultSession } from "next-auth";
 
 export interface User {
   name?: string | null;
-  username: string;
+  username?: string;
   email?: string | null;
   picture?: string | null;
   image?: string | null;
   accessToken?: string | null;
+  refreshToken?: string | null;
   id?: string | null;
 }
 
