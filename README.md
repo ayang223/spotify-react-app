@@ -1,4 +1,4 @@
-#[React app](https://spotify-react-app-seven.vercel.app) using spotify api to get user info and saving songs to playlist
+# [React app](https://spotify-react-app-seven.vercel.app) using spotify api to get user info and saving songs to playlist
 
 
 
