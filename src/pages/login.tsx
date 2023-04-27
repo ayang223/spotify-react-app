@@ -10,7 +10,7 @@ const Login = ({ providers }: { providers: any }) => {
 
   useEffect(() => {
     if (session) {
-      router.push("/top-artists");
+      router.push("/top-tracks");
     }
   }, [session]);
 
