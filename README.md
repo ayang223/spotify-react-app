@@ -1,3 +1,7 @@
+#[React app](https://spotify-react-app-seven.vercel.app) using spotify api to get user info and saving songs to playlist
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
