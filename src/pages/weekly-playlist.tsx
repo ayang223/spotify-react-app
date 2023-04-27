@@ -1,4 +1,4 @@
-import { getProviders } from "next-auth/react";
+import { getProviders, getSession } from "next-auth/react";
 import React from "react";
 import { useEffect } from "react";
 import Loader from "../components/loader";
@@ -6,7 +6,7 @@ import PlaylistLayout from "../components/playlist-layout";
 import { useDispatch, useSelector } from "react-redux";
 import { selectWeeklyPlaylist, setWeeklyPlaylist } from "../store/weekly-playlist-slice";
 
-const TopTracks = ({ providers }: { providers: any }) => {
+const TopTracks = () => {
   const dispatch = useDispatch();
   const weeklyPlaylistState = useSelector(selectWeeklyPlaylist);
   useEffect(() => {
@@ -34,9 +34,18 @@ const TopTracks = ({ providers }: { providers: any }) => {
 
 export default TopTracks;
 
-export async function getServerSideProps() {
-  const providers = await getProviders();
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
   return {
-    props: { providers },
+    props: {},
   };
 }

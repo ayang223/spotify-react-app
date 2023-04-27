@@ -90,7 +90,7 @@ const Header = () => {
                             <Menu.Item>
                               {({ active }) => (
                                 <a
-                                  onClick={() => signOut()}
+                                  onClick={() => signOut({ callbackUrl: `${window.location.origin}/login` })}
                                   className={classNames(
                                     active ? "bg-gray-100 text-gray-900 cursor-pointer" : "text-gray-700",
                                     "block px-4 py-2 text-sm"

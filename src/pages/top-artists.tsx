@@ -1,4 +1,4 @@
-import { getProviders } from "next-auth/react";
+import { getProviders, getSession, useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { Tab } from "@headlessui/react";
@@ -18,7 +18,7 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-const TopTracks = ({ providers }: { providers: any }) => {
+const TopTracks = () => {
   const [categories, setCategories] = useState<string[]>(["last 4 weeks", "last 6 months", "all time"]);
   const dispatch = useDispatch();
   const shortTermState = useSelector(selectShortTermTopArtists);
@@ -106,9 +106,18 @@ const TopTracks = ({ providers }: { providers: any }) => {
 
 export default TopTracks;
 
-export async function getServerSideProps() {
-  const providers = await getProviders();
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
   return {
-    props: { providers },
+    props: {},
   };
 }

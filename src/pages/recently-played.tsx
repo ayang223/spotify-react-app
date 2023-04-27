@@ -1,11 +1,11 @@
-import { getProviders } from "next-auth/react";
+import { getProviders, getSession } from "next-auth/react";
 import React from "react";
 import { useEffect } from "react";
 import Loader from "../components/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRecentlyPlayed, setRecentlyPlayed } from "../store/recently-played-slice";
 
-const RecentlyPlayed = ({ providers }: { providers: any }) => {
+const RecentlyPlayed = () => {
   const dispatch = useDispatch();
   const recentlyPlayedState = useSelector(selectRecentlyPlayed);
 
@@ -79,9 +79,18 @@ const RecentlyPlayed = ({ providers }: { providers: any }) => {
 
 export default RecentlyPlayed;
 
-export async function getServerSideProps() {
-  const providers = await getProviders();
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
   return {
-    props: { providers },
+    props: {},
   };
 }
